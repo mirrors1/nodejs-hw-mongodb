@@ -42,7 +42,7 @@ export const setupServer = () => {
   });
 
   //middleware для обробки контактів
-  app.use(contactsRouter);
+  app.use('/contacts', contactsRouter);
 
   //middleware для обробки випадку, коли клієнт звертається до неіснуючого маршруту
   app.use('*', notFoundHandler);
