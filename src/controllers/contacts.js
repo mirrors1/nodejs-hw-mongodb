@@ -8,7 +8,7 @@ import {
 import createHttpError from 'http-errors';
 
 // Контролер для обробки GET-запитів на '/contacts'
-export const getContactsController = async (req, res, next) => {
+export const getContactsController = async (req, res) => {
   const contacts = await getAllContacts();
 
   res.status(200).json({
@@ -19,7 +19,7 @@ export const getContactsController = async (req, res, next) => {
 };
 
 // Маршрут для обробки GET-запитів на '/contacts/:contactId'
-export const getContactByIdController = async (req, res, next) => {
+export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
   const contact = await getContactsById(contactId);
 
@@ -48,7 +48,7 @@ export const createContactController = async (req, res) => {
 };
 
 // Контролер для обробки DELETE-запитів на '/contacts/:contactId' для видалення контактів за їх ID
-export const deleteContactController = async (req, res, next) => {
+export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
   const contact = await deleteContact(contactId);
 
@@ -60,7 +60,7 @@ export const deleteContactController = async (req, res, next) => {
 };
 
 // Контролер для обробки PATCH-запитів на '/contacts/:contactId' для оновлення полів контакту за їх ID
-export const patchContactController = async (req, res, next) => {
+export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const result = await updateContact(contactId, req.body);
 
