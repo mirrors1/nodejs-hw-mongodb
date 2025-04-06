@@ -17,11 +17,10 @@ export const createContactSchema = Joi.object({
   email: Joi.string().email().messages({
     'string.base': 'E-mail should be a string', // Кастомізація повідомлення
     'string.empty': 'E-mail is not allowed to be empty',
-    'string.email': 'The string is not a valid e-mail.',
+    'string.email': 'The string is not a valid e-mail',
   }),
   isFavourite: Joi.boolean().required().messages({
     'boolean.base': 'IsFavourite should be a boolean', // Кастомізація повідомлення
-    'any.required': 'IsFavourite is required',
   }),
   contactType: Joi.string()
     .valid('work', 'home', 'personal')
