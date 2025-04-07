@@ -19,7 +19,7 @@ export const createContactSchema = Joi.object({
     'string.empty': 'E-mail is not allowed to be empty',
     'string.email': 'The string is not a valid e-mail',
   }),
-  isFavourite: Joi.boolean().required().messages({
+  isFavourite: Joi.boolean().messages({
     'boolean.base': 'IsFavourite should be a boolean', // Кастомізація повідомлення
   }),
   contactType: Joi.string()
