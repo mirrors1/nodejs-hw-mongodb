@@ -1,6 +1,6 @@
 // src/services/students.js
 
-import { SORT_ORDER } from '../constants/index.js';
+import { SORT_ORDER } from '../constants/contacts.js';
 import { ContactsCollection } from '../db/models/contacts.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
@@ -67,8 +67,9 @@ export const updateContact = async (contactId, payload, options = {}) => {
     { _id: contactId },
     payload,
     {
-      new: true,
-      includeResultMetadata: true,
+      // new: true, //Перенесено в хук моделі //Повертає документ після оновлення
+      // runValidators: true, //Перенесено в хук моделі //Включення валідатора mongoose при оновленні даних
+      includeResultMetadata: true, //// Повертає додаткові властивості операції, а не лише документа
       ...options,
     },
   );

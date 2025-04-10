@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { contactTypeList } from '../constants/contacts.js';
 
 // Оголошення схеми з кастомізованими повідомленнями
 export const createContactSchema = Joi.object({
@@ -23,11 +24,10 @@ export const createContactSchema = Joi.object({
     'boolean.base': 'IsFavourite should be a boolean', // Кастомізація повідомлення
   }),
   contactType: Joi.string()
-    .valid('work', 'home', 'personal')
+    .valid(...contactTypeList)
     .required()
     .messages({
-      'any.only':
-        'СontactType only allows values: `work`, `home` or `personal`', // Кастомізація повідомлення
+      'any.only': `СontactType only allows values: ${contactTypeList}`, // Кастомізація повідомлення
       'any.required': 'ContactType is required',
     }),
 });
@@ -51,7 +51,9 @@ export const updateContactSchema = Joi.object({
   isFavourite: Joi.boolean().messages({
     'boolean.base': 'IsFavourite should be a boolean', // Кастомізація повідомлення
   }),
-  contactType: Joi.string().valid('work', 'home', 'personal').messages({
-    'any.only': 'СontactType only allows values: `work`, `home` or `personal`', // Кастомізація повідомлення
-  }),
+  contactType: Joi.string()
+    .valid(...contactTypeList)
+    .messages({
+      'any.only': `СontactType only allows values: ${contactTypeList}`, // Кастомізація повідомлення
+    }),
 });

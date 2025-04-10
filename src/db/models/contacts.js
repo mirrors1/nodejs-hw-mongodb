@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { contactTypeList } from '../../constants/contacts.js';
+import { handleSaveError, setUpdateSettings } from './hooks.js';
 
 const contactsSchema = new Schema(
   {
@@ -19,7 +21,7 @@ const contactsSchema = new Schema(
     },
     contactType: {
       type: String,
-      enum: [`work`, `home`, `personal`],
+      enum: contactTypeList,
       required: true,
     },
   },
@@ -28,5 +30,9 @@ const contactsSchema = new Schema(
     versionKey: false,
   },
 );
+
+contactsSchema.post('save', handleSaveError); //Хук для повернення корректного статусу помилки при валідації mongoose при запису нових даних
+contactsSchema.pre('findOneAndUpdate', setUpdateSettings); // Хук вмикає налаштування при оновленні даних
+contactsSchema.post('findOneAndUpdate', handleSaveError); //Хук для повернення корректного статусу помилки при валідації mongoose при оновленні даних
 
 export const ContactsCollection = model('contacts', contactsSchema);
