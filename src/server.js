@@ -5,6 +5,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { getEnvVar } from './utils/getEnvVar.js';
 import contactsRouter from './routers/contacts.js';
+import authRouter from './routers/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
@@ -43,6 +44,9 @@ export const setupServer = () => {
 
   //middleware для обробки контактів
   app.use('/contacts', contactsRouter);
+
+  //middleware для обробки користувачів
+  app.use('/auth', authRouter);
 
   //middleware для обробки випадку, коли клієнт звертається до неіснуючого маршруту
   app.use('*', notFoundHandler);

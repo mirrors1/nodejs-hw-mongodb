@@ -14,30 +14,38 @@ import {
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
-const router = Router();
+const contactsRouter = Router();
 
 // Маршрут для обробки GET-запитів на '/contacts'
-router.get('/', ctrlWrapper(getContactsController));
+contactsRouter.get('/', ctrlWrapper(getContactsController));
 
 // Маршрут для обробки GET-запитів на '/contacts/:contactId'
-router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
+contactsRouter.get(
+  '/:contactId',
+  isValidId,
+  ctrlWrapper(getContactByIdController),
+);
 
 // Маршрут для обробки POST-запитів на '/contacts'
-router.post(
+contactsRouter.post(
   '/',
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 // Маршрут для обробки DELETE-запитів на '/contacts/:contacttId'
-router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
+contactsRouter.delete(
+  '/:contactId',
+  isValidId,
+  ctrlWrapper(deleteContactController),
+);
 
 // Маршрут для обробки PATCH-запитів на '/contacts/:contacttId'
-router.patch(
+contactsRouter.patch(
   '/:contactId',
   validateBody(updateContactSchema),
   isValidId,
   ctrlWrapper(patchContactController),
 );
 
-export default router;
+export default contactsRouter;
