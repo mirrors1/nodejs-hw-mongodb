@@ -15,7 +15,7 @@ export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
-
+  filter.userId = req.user._id;
   const contacts = await getAllContacts({
     page,
     perPage,
@@ -33,12 +33,13 @@ export const getContactsController = async (req, res) => {
 
 // Маршрут для обробки GET-запитів на '/contacts/:contactId'
 export const getContactByIdController = async (req, res) => {
+  const userId = req.user._id;
   const { contactId } = req.params;
-  const contact = await getContactsById(contactId);
+  const contact = await getContactsById(userId, contactId);
 
   // Відповідь, якщо контакт не знайдено
   if (!contact) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, `Contact with id=${contactId} not found`);
   }
 
   // Відповідь, якщо контакт знайдено
@@ -51,7 +52,8 @@ export const getContactByIdController = async (req, res) => {
 
 // Контролер для обробки POST-запитів на '/contacts' для додавання нових контактів
 export const createContactController = async (req, res) => {
-  const contact = await createContact(req.body);
+  const { _id: userId } = req.user;
+  const contact = await createContact({ ...req.body, userId });
 
   res.status(201).json({
     status: 201,
@@ -62,11 +64,12 @@ export const createContactController = async (req, res) => {
 
 // Контролер для обробки DELETE-запитів на '/contacts/:contactId' для видалення контактів за їх ID
 export const deleteContactController = async (req, res) => {
+  const userId = req.user._id;
   const { contactId } = req.params;
-  const contact = await deleteContact(contactId);
+  const contact = await deleteContact(userId, contactId);
 
   if (!contact) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, `Contact with id=${contactId} not found`);
   }
 
   res.status(204).send();
@@ -74,16 +77,17 @@ export const deleteContactController = async (req, res) => {
 
 // Контролер для обробки PATCH-запитів на '/contacts/:contactId' для оновлення полів контакту за їх ID
 export const patchContactController = async (req, res) => {
+  const userId = req.user._id;
   const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+  const result = await updateContact(userId, contactId, req.body);
 
   if (!result) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, `Contact with id=${contactId} not found`);
   }
 
   res.json({
     status: 200,
-    message: 'Successfully patched a contact!',
+    message: 'Successfully update contact!',
     data: result.contact,
   });
 };

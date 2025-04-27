@@ -17,6 +17,10 @@ export const getAllContacts = async ({
 
   const contactsQuery = ContactsCollection.find();
 
+  if (filter.userId) {
+    contactsQuery.where('userId').equals(filter.userId);
+  }
+
   if (filter.type) {
     contactsQuery.where('contactType').equals(filter.type);
   }
@@ -42,8 +46,8 @@ export const getAllContacts = async ({
 };
 
 //функція пошуку контакта по його ID в базі даних
-export const getContactsById = async (contactId) => {
-  const contact = await ContactsCollection.findById(contactId);
+export const getContactsById = async (userId, contactId) => {
+  const contact = await ContactsCollection.findOne({ userId, _id: contactId });
   return contact;
 };
 
@@ -54,17 +58,23 @@ export const createContact = async (payload) => {
 };
 
 //функція видалення контакту по ідентифікатору (contactId) з бази даних
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (userId, contactId) => {
   const contact = await ContactsCollection.findOneAndDelete({
+    userId,
     _id: contactId,
   });
   return contact;
 };
 
 //функція оновлення даних контакту по ідентифікатору (contactId) в базі даних
-export const updateContact = async (contactId, payload, options = {}) => {
+export const updateContact = async (
+  userId,
+  contactId,
+  payload,
+  options = {},
+) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
-    { _id: contactId },
+    { userId, _id: contactId },
     payload,
     {
       // new: true, //Перенесено в хук моделі //Повертає документ після оновлення

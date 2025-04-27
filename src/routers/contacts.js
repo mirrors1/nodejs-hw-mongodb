@@ -47,8 +47,8 @@ contactsRouter.delete(
 // Маршрут для обробки PATCH-запитів на '/contacts/:contacttId'
 contactsRouter.patch(
   '/:contactId',
-  validateBody(updateContactSchema),
   isValidId,
+  validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 

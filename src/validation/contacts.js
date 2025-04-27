@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import { contactTypeList } from '../constants/contacts.js';
 import { emailRegexp } from '../constants/auth.js';
+import { isValidObjectId } from 'mongoose';
 
 // Оголошення схеми з кастомізованими повідомленнями
 export const createContactSchema = Joi.object({
@@ -32,6 +33,12 @@ export const createContactSchema = Joi.object({
       'any.only': `СontactType only allows values: ${contactTypeList}`, // Кастомізація повідомлення
       'any.required': 'ContactType is required',
     }),
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('The {userId} should be a valid mongo id');
+    }
+    return true;
+  }),
 });
 
 export const updateContactSchema = Joi.object({
@@ -59,4 +66,10 @@ export const updateContactSchema = Joi.object({
     .messages({
       'any.only': `СontactType only allows values: ${contactTypeList}`, // Кастомізація повідомлення
     }),
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('The {userId} should be a valid mongo id');
+    }
+    return true;
+  }),
 });
