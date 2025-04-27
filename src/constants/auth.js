@@ -14,6 +14,6 @@ export const emailRegexp =
 У реальному житті, навіть якщо RegEx пройдено, справжню валідацію email краще робити ще й сервером + через відправку листа з підтвердженням.
  */
 
-export const accessTokenLifeTime = 1000 * 60 * 15;
+export const accessTokenLifeTime = 1000 * 60 * 15; //15хв
 
-export const refreshTokenLifeTime = 1000 * 60 * 60 * 24;
+export const refreshTokenLifeTime = 1000 * 60 * 60 * 24 * 30; //30дн

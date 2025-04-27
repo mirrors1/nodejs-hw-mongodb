@@ -8,6 +8,7 @@ import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import cookieParser from 'cookie-parser';
 
 // Читаємо змінну оточення PORT, якщо відсутня - 3000 по замовчуванні
 const PORT = Number(getEnvVar('PORT', '3000'));
@@ -34,6 +35,9 @@ export const setupServer = () => {
       },
     }),
   );
+
+  //middleware для роботи з Cookies
+  app.use(cookieParser());
 
   // Маршрут для обробки GET-запитів на '/'
   app.get('/', (req, res) => {
