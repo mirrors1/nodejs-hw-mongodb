@@ -46,3 +46,7 @@ export const loginUser = async (payload) => {
     refreshTokenValidUntil: new Date(Date.now() + refreshTokenLifeTime),
   });
 };
+
+export const logoutUser = async (sessionId) => {
+  await SessionCollection.deleteOne({ _id: sessionId });
+};
