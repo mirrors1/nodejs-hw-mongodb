@@ -13,8 +13,12 @@ import {
 } from '../validation/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
+
+//обробляє запит на аутентифікацію
+contactsRouter.use(authenticate);
 
 // Маршрут для обробки GET-запитів на '/contacts'
 contactsRouter.get('/', ctrlWrapper(getContactsController));
