@@ -3,12 +3,14 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 import { getEnvVar } from './utils/getEnvVar.js';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/photo.js';
 
 // Читаємо змінну оточення PORT, якщо відсутня - 3000 по замовчуванні
 const PORT = Number(getEnvVar('PORT', '3000'));
@@ -42,9 +44,13 @@ export const setupServer = () => {
   // Маршрут для обробки GET-запитів на '/'
   app.get('/', (req, res) => {
     res.json({
-      message: 'Hello world!',
+      message:
+        'Hello! This API is designed to store and process your contacts.',
     });
   });
+
+  //middleware для збереження та роздачі статичних файлів (зображень)
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   //middleware для обробки контактів
   app.use('/contacts', contactsRouter);

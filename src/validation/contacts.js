@@ -39,6 +39,10 @@ export const createContactSchema = Joi.object({
     }
     return true;
   }),
+  photo: Joi.string().messages({
+    'string.base': 'Photo should be a string', // Кастомізація повідомлення
+    'string.empty': 'Photo is not allowed to be empty',
+  }),
 });
 
 export const updateContactSchema = Joi.object({
@@ -71,5 +75,9 @@ export const updateContactSchema = Joi.object({
       return helper.message('The {userId} should be a valid mongo id');
     }
     return true;
+  }),
+  photo: Joi.string().messages({
+    'string.base': 'Photo should be a string', // Кастомізація повідомлення
+    'string.empty': 'Photo is not allowed to be empty',
   }),
 });

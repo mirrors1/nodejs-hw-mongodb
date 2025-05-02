@@ -9,6 +9,9 @@ import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 
 // Контролер для обробки GET-запитів на '/contacts'
 export const getContactsController = async (req, res) => {
@@ -53,7 +56,19 @@ export const getContactByIdController = async (req, res) => {
 // Контролер для обробки POST-запитів на '/contacts' для додавання нових контактів
 export const createContactController = async (req, res) => {
   const { _id: userId } = req.user;
-  const contact = await createContact({ ...req.body, userId });
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await createContact({ ...req.body, photo: photoUrl, userId });
 
   res.status(201).json({
     status: 201,
@@ -76,10 +91,25 @@ export const deleteContactController = async (req, res) => {
 };
 
 // Контролер для обробки PATCH-запитів на '/contacts/:contactId' для оновлення полів контакту за їх ID
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res, next) => {
   const userId = req.user._id;
   const { contactId } = req.params;
-  const result = await updateContact(userId, contactId, req.body);
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const result = await updateContact(userId, contactId, {
+    ...req.body,
+    photo: photoUrl,
+  });
 
   if (!result) {
     throw createHttpError(404, `Contact with id=${contactId} not found`);
