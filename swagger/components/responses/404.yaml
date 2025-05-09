@@ -1,0 +1,15 @@
+description: Not Found
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: 'Contact with id=68147500491753c2edf939d4 not found'

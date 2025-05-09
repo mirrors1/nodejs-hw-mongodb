@@ -11,6 +11,7 @@ import authRouter from './routers/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { UPLOAD_DIR } from './constants/photo.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 // Читаємо змінну оточення PORT, якщо відсутня - 3000 по замовчуванні
 const PORT = Number(getEnvVar('PORT', '3000'));
@@ -51,6 +52,9 @@ export const setupServer = () => {
 
   //middleware для збереження та роздачі статичних файлів (зображень)
   app.use('/uploads', express.static(UPLOAD_DIR));
+
+  //middleware для отримання документації
+  app.use('/api-docs', swaggerDocs());
 
   //middleware для обробки контактів
   app.use('/contacts', contactsRouter);
