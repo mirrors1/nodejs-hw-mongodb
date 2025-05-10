@@ -1,4 +1,4 @@
-description: Not Found
+description: Invalid contactId or Not Found
 content:
   application/json:
     schema:
@@ -13,3 +13,16 @@ content:
         message:
           type: string
           example: 'Contact with id=68147500491753c2edf939d4 not found'
+    examples:
+      invalidContactId:
+        description: 'The **contactId** parameter is invalid.'
+        summary: Invalid contactId
+        value:
+          status: 404
+          message: '68147500491753c2edf939d4 not valid id'
+      notFound:
+        summary: Wrong not found id
+        description: 'Wrong not found id'
+        value:
+          status: 404
+          message: 'Contact with id=68147500491753c2edf939d4 not found'

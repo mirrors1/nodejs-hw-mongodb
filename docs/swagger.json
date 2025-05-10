@@ -21,10 +21,6 @@
     {
       "name": "Contacts",
       "description": "Contact operations."
-    },
-    {
-      "name": "Auth",
-      "description": "Auth operations."
     }
   ],
   "paths": {
@@ -197,8 +193,7 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "userId"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -229,11 +224,6 @@
                       "home",
                       "personal"
                     ]
-                  },
-                  "userId": {
-                    "description": "Contact's user id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
                   },
                   "photo": {
                     "description": "Contact's photo",
@@ -340,6 +330,9 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -369,6 +362,9 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -432,11 +428,6 @@
                       "home",
                       "personal"
                     ]
-                  },
-                  "userId": {
-                    "description": "Contact's user id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
                   },
                   "photo": {
                     "description": "Contact's photo",
@@ -505,7 +496,8 @@
           "_id",
           "name",
           "phoneNumber",
-          "contactType"
+          "contactType",
+          "userId"
         ],
         "properties": {
           "_id": {
@@ -615,7 +607,7 @@
         }
       },
       "404": {
-        "description": "Not Found",
+        "description": "Invalid contactId or Not Found",
         "content": {
           "application/json": {
             "schema": {
@@ -632,6 +624,24 @@
                 "message": {
                   "type": "string",
                   "example": "Contact with id=68147500491753c2edf939d4 not found"
+                }
+              }
+            },
+            "examples": {
+              "invalidContactId": {
+                "description": "The URL path parameter **contactId** is invalid",
+                "summary": "Invalid contactId",
+                "value": {
+                  "status": 404,
+                  "message": "68147500491753c2edf939d4 not valid id"
+                }
+              },
+              "notFound": {
+                "summary": "Wrong not found id",
+                "description": "Wrong not found id",
+                "value": {
+                  "status": 404,
+                  "message": "Contact with id=68147500491753c2edf939d4 not found"
                 }
               }
             }

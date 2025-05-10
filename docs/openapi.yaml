@@ -9,8 +9,6 @@ info:
 tags:
   - name: Contacts
     description: Contact operations.
-  - name: Auth
-    description: Auth operations.
 servers:
   - url: https://contacts-app-z426.onrender.com
   - url: http://localhost:3000
